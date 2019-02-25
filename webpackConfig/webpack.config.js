@@ -70,7 +70,7 @@ module.exports = {
   // 插件
   plugins: [
     // 打包之前清除打包文件夹下的旧文件
-    new CleanWebpackPlugin(['../dist']),
+    new CleanWebpackPlugin(['dist']),
     // 创建了一个全新的文件，所有的 bundle 会自动添加到 html 中。
     new HtmlWebpackPlugin({
       title: 'Output Management'
@@ -92,6 +92,6 @@ module.exports = {
     // 输出文件名
     filename: '[name].bundle.js',
     // 输出文件夹，绝对路径
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(__dirname, 'dist'),
   },
 };

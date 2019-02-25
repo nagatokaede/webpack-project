@@ -35,7 +35,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(['../dist']),
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: './client/index.html'
     }),
@@ -48,6 +48,6 @@ module.exports = {
   ],
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, '../dist')
+    path: path.resolve(__dirname, 'dist')
   }
 };
