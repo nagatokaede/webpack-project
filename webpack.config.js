@@ -11,6 +11,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 // 解决 vue-loader 依赖
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
+// 单独打包 css 文件
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+//
+
+
 const webpack = require('webpack');
 
 module.exports = {
@@ -45,11 +51,18 @@ module.exports = {
         loader: 'vue-loader',
         exclude: /node_modules/
       },
+      // {
+      //   test: /\.css$/,
+      //   use: [
+      //     'style-loader',
+      //     'css-loader'
+      //   ]
+      // },
       {
         test: /\.css$/,
         use: [
-          'style-loader',
-          'css-loader'
+          MiniCssExtractPlugin.loader,
+          "css-loader"
         ]
       }
     ]
@@ -67,7 +80,12 @@ module.exports = {
     // 模块热替换插件
     new webpack.HotModuleReplacementPlugin(),
     // 解决 vue-loader 依赖
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    // 单独打包 css 文件
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    })
   ],
   // 输出
   output: {

@@ -1,14 +1,17 @@
 'use static';
 
 const path = require('path');
+const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  entry: {
-    app: './src/index.js'
-  },
+  entry: [
+    'webpack-hot-middleware/client',
+    './src/index.js'
+  ],
   resolve: {
     extensions: [ '.js', '.vue', '.json' ],
     alias: {
@@ -25,8 +28,8 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          'style-loader',
-          'css-loader'
+          MiniCssExtractPlugin.loader,
+          "css-loader"
         ]
       }
     ]
@@ -36,7 +39,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
+    new webpack.HotModuleReplacementPlugin()
   ],
   output: {
     filename: '[name].bundle.js',

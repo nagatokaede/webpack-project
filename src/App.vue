@@ -11,7 +11,8 @@
     data() {
       return {
         test: 'hello world!',
-        test2: 'orz'
+        test2: 'orz',
+        test3: '囧rz'
       };
     }
   };
