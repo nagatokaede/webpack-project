@@ -10,7 +10,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   entry: [
     'webpack-hot-middleware/client',
-    './src/index.js'
+    './client/index.js'
   ],
   resolve: {
     extensions: [ '.js', '.vue', '.json' ],
@@ -35,9 +35,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(['../dist']),
     new HtmlWebpackPlugin({
-      template: './src/index.html'
+      template: './client/index.html'
     }),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
@@ -48,6 +48,6 @@ module.exports = {
   ],
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, '../dist')
   }
 };
