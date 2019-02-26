@@ -1,3 +1,11 @@
 body {
     background-image: url("../images/bg.jpg");
 }
+
+.header-content {
+    text-align: center;
+    line-height: 50px;
+    width: 100%;
+    display: block;
+    font-size: 20px;
+}
