@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        {{ test }}
+        <router-view></router-view>
     </div>
 </template>
 
@@ -11,8 +11,7 @@
     data() {
       return {
         test: 'hello world!',
-        test2: 'orz',
-        test3: '囧rz'
+        content: this.$route
       };
     }
   };

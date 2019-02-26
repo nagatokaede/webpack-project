@@ -12,10 +12,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 // 单独打包 css 文件
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
-//
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const webpack = require('webpack');
 
@@ -51,13 +48,12 @@ module.exports = {
         loader: 'vue-loader',
         exclude: /node_modules/
       },
-      // {
-      //   test: /\.css$/,
-      //   use: [
-      //     'style-loader',
-      //     'css-loader'
-      //   ]
-      // },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader'
+        ]
+      },
       {
         test: /\.css$/,
         use: [
