@@ -16,22 +16,18 @@
                             <div class="item active">
                                 <img class="img-responsive center-block" :src="images.img_1" />
                                 <div class="carousel-caption">
-                                    ...
                                 </div>
                             </div>
                             <div class="item">
                                 <img class="img-responsive center-block" :src="images.img_2" />
                                 <div class="carousel-caption">
-                                    ...
                                 </div>
                             </div>
                             <div class="item">
                                 <img class="img-responsive center-block" :src="images.img_3" />
                                 <div class="carousel-caption">
-                                    ...
                                 </div>
                             </div>
-                            ...
                         </div>
 
                         <!-- Controls -->
