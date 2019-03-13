@@ -2,15 +2,24 @@
     <div id="tool">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6 col-xs-12">
                     <p>访问时间：{{ dateContent.date }}</p>
                     <p>时间戳：{{ dateContent.dateParse }}</p>
+                </div>
+
+                <div class="col-md-6 col-xs-12">
                     <p>md5 加密：{{ dateContent.md5 }}</p>
                     <p>md5 加密截取后24位：{{ dateContent.md5_24 }}</p>
+                </div>
+
+                <div class="col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-body" id="print" v-html="printContent">
                         </div>
                     </div>
+                </div>
+
+                <div class="col-xs-12">
                     <textarea id="editor" placeholder="简单的 simditor 富文本编辑器" autofocus></textarea>
                     <button type="button" class="btn btn-info btn-lg btn-block" @click="getEdit" style="margin: 10px 0">
                         提交富文本

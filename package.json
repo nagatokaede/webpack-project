@@ -12,6 +12,7 @@
     "server": "node ./server/server.js"
   },
   "dependencies": {
+    "koa-sslify": "^4.0.3",
     "md5": "^2.2.1",
     "mini-css-extract-plugin": "^0.5.0",
     "terser": "^3.16.1",
