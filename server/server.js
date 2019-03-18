@@ -7,11 +7,14 @@ const path = require('path');
 
 const Koa = require('koa');
 const webpack = require('webpack');
+const bodyParser = require('koa-bodyparser');
 const devMiddleware = require('koa-webpack-dev-middleware');
 const hotMiddleware = require('koa-webpack-hot-middleware');
 
 const fs = require('./util/fs.js');
 const config = require('./config.js');
+const router = require('./router/route');
+const page404 = require('./router/404');
 
 const app = new Koa();
 
@@ -42,6 +45,15 @@ app.use(hotMiddleware(compiler));
 // app.listen(config.port, '0.0.0.0', () => {
 //   console.info('running server localhost:' + config.port);
 // });
+
+// 加载 koa-bodyparser 中间件，处理 POST 提交信息
+app.use(bodyParser());
+
+// 加载路由中间件
+app.use(router.routes()).use(router.allowedMethods());
+
+// 加载 404 中间件
+app.use(page404());
 
 http.createServer(app.callback()).listen(config.port, '0.0.0.0');
 https.createServer(options, app.callback()).listen(443, '0.0.0.0');

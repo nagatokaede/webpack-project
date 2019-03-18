@@ -25,6 +25,14 @@
                         提交富文本
                     </button>
                 </div>
+
+                <div class="col-md-6 col-xs-12">
+                    <button type="button" class="btn btn-info btn-lg btn-block" @click="getTestApiGet">GET API TEST</button>
+                </div>
+
+                <div class="col-md-6 col-xs-12">
+                    <button type="button" class="btn btn-info btn-lg btn-block" @click="getTestApiPost">POST API TEST</button>
+                </div>
             </div>
         </div>
     </div>
@@ -65,6 +73,49 @@
     },
 
     methods: {
+      /* -------- api ---------- */
+      testGet(query) {
+        return new Promise((resolve, reject) => {
+          this.$axios.testGet(query).then(res => {
+            const data = res.data;
+            if (data.description === 'SUCCESS') {
+              resolve(data.data);
+            } else {
+              alert(data.description);
+              reject(data.description);
+            }
+          });
+        });
+      },
+
+      testPost(body) {
+        return new Promise((resolve, reject) => {
+          this.$axios.testPost(body).then(res => {
+            const data = res.data;
+            if (data.description === 'SUCCESS') {
+              resolve(data.data);
+            } else {
+              alert(data.description);
+              reject(data.description);
+            }
+          });
+        });
+      },
+
+      /* ------ api 调用 -------- */
+      getTestApiGet() {
+        this.testGet().then(res => {
+          console.info(res);
+        });
+      },
+
+      getTestApiPost() {
+        this.testPost().then(res => {
+          console.info(res);
+        });
+      },
+
+      /* -------- 工具 ---------- */
       createEditor() {
         this.editor = new Simditor({
           textarea: document.querySelector('textarea'),
