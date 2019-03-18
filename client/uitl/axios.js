@@ -1,7 +1,6 @@
 'use static';
 
 const axios = require('axios');
-const config = require('../../server/config.js');
 
 class instance {
   constructor(baseURL) {
@@ -36,7 +35,4 @@ class instance {
   };
 }
 
-let baseURL = 'https://localhost/';
-if (config.mode === 'production') baseURL = 'https://kaede.nagato.top/';
-
-export const api = new instance(baseURL);
+export const api = new instance('https://kaede.nagato.top/');
