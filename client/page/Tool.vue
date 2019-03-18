@@ -106,12 +106,14 @@
       getTestApiGet() {
         this.testGet().then(res => {
           console.info(res);
+          document.getElementById('print').innerText += res.message;
         });
       },
 
       getTestApiPost() {
         this.testPost().then(res => {
           console.info(res);
+          document.getElementById('print').innerText += res.message;
         });
       },
 
