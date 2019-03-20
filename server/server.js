@@ -57,4 +57,6 @@ app.use(page404());
 
 http.createServer(app.callback()).listen(config.port, '0.0.0.0');
 https.createServer(options, app.callback()).listen(443, '0.0.0.0');
-console.log('https server is running');
+console.info(`running mode type ${config.mode}`);
+console.info(`http server is running http://localhost:${config.port}`);
+console.info(`https server is running https://localhost`);
