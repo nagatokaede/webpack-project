@@ -15,15 +15,19 @@ const leaveMessageFindByPage = query => {
       delete: { $ne: true }
     }).
     skip(((query.pageIndex || 1) - 1) * (query.pageSize || 10)).
-    limit(query.pageSize || 10).select({
+    limit(query.pageSize || 10).
+    select({
       createBy: 1,
-      message: 1
+      message: 1,
+      createTime: 1,
+      style: 1,
+      _id: 0
     }).
     then(docs => {
       console.info(docs);
       resolve({
-        data: docs,
-        status: "SUCCEED"
+        pageData: docs,
+        totalCount: docs.length
       });
     }).
     catch(err => {

@@ -17,26 +17,38 @@ const { leaveMessageModel, leaveMessageHistoryModel } = require('../modules/leav
  * updateBy: <string> 修改者
  * updateInfo: <string> 修改信息
  */
-const docs = {};
 
-const leaveMessageInsert = query => {
+const leaveMessageInsert = body => {
   return new Promise((resolve, reject) => {
-    leaveMessageModel.insert({
-      delete: { $ne: true }
-    }).
-    skip((query.pageIndex - 1) * query.pageSize).
-    limit(query.pageSize).select({
-      createBy: 1,
-      message: 1
-    }).
-    then(docs => {
-      resolve(docs);
-    }).
-    catch(err => {
-      console.warn('分页查询留言表失败：' + err);
-      reject(err);
+    const createLeaveMessage = new leaveMessageModel({
+      createBy: body.createBy,
+      message: body.message,
+      style: body.style
+    });
+  
+    createLeaveMessage.save(err => { // 保存数据
+      if (err) {
+        reject(err);
+      } else {
+        resolve(createLeaveMessage);
+      }
     });
   });
 };
 
-module.exports = leaveMessageFindByPage;
+// const leaveMessageHistoryInsert = async query => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       const createLeaveMessageHistory = {
+//         _id: await leaveMessageInsert._id,
+//         createBy: query.createBy,
+//         message: query.message
+//       };
+//       resolve(createLeaveMessageHistory);
+//     } catch (err) {
+//       reject(err);
+//     }
+//   });
+// };
+
+module.exports = leaveMessageInsert;

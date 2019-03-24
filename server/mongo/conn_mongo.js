@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 // 连接数据库
-mongoose.connect('mongodb://localhost:15498/webpack_project');
+mongoose.connect('mongodb://localhost:15498/webpack_project', { useNewUrlParser: true });
 
 // 监听 MongoDB 连接状态
 // 连接

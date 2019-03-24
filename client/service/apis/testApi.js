@@ -1,3 +1,4 @@
+'use static';
 import { api } from '../../uitl/axios.js';
 
 export const testGet = query => api.get(

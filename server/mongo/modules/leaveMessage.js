@@ -1,6 +1,6 @@
 'use static';
 
-const mongoose = require(mongoose);
+const mongoose = require('mongoose');
 
 require('../conn_mongo');
 
@@ -19,10 +19,20 @@ const leaveMessageSchema = mongoose.Schema({
     type: Date,
     default: new Date()
   },
-  createBy: String,
+  createBy: {
+    type: String,
+    default: '匿名者'
+  },
   userIP: String,
   message: String,
-  delete: Boolean,
+  style: {
+    type: String,
+    default: 'default'
+  },
+  delete: {
+    type: Boolean,
+    default: false
+  },
 });
 
 /*
@@ -46,7 +56,6 @@ const leaveMessageHistorySchema = mongoose.Schema({
 // mongoose.model(modeName, schema)
 // model 就是数据库中的集合 collection
 const leaveMessageModel = mongoose.model('leave_message', leaveMessageSchema);
-
 const leaveMessageHistoryModel = mongoose.model('leave_message_history', leaveMessageHistorySchema);
 
 module.exports.leaveMessageModel = leaveMessageModel;

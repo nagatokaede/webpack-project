@@ -1,6 +1,8 @@
 'use static';
 
 const Route = require('koa-router');
+const findLeaveMessage = require('../mongo/util/findLeaveMessage');
+const insertLeaveMessage = require('../mongo/util/insertLeaveMessage');
 
 const logPath = (ctx, method) => {
   console.log(`请求方式 ${method} 请求地址 ${ctx.url} 并返回数据成功！`);
@@ -31,9 +33,45 @@ test.post('/', async ctx => {
   logPath(ctx, 'POST');
 });
 
+// API ---------------------------------------------
+const leaveMessage = new Route();
+
+leaveMessage.get('/', async ctx => {
+  let docs = {};
+  try {
+    docs = {
+      data: await findLeaveMessage(ctx.query),
+      description: 'SUCCESS'
+    }
+  } catch (err) {
+    docs = {
+      description: err
+    }
+  }
+  
+  ctx.body = docs;
+});
+
+
+leaveMessage.post('/', async ctx => {
+  let docs = {};
+  try {
+    docs = {
+      data: await insertLeaveMessage(ctx.request.body),
+      description: 'SUCCESS'
+    }
+  } catch (err) {
+    docs = {
+      description: err
+    }
+  }
+  
+  ctx.body = docs;
+});
 
 // 装载所有路由接口 ---------------------------------------------
 const router = new Route();
+router.use('/leaveMessage', leaveMessage.routes(), leaveMessage.allowedMethods());
 router.use('/test', test.routes(), test.allowedMethods());
 
 
