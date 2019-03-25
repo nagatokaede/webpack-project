@@ -16,7 +16,7 @@
             <form class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="输入 Instagram 地址" v-model="reqBody.url">
+                        <input type="text" class="form-control" placeholder="输入 Instagram 地址" v-model="requestBody.url">
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary" @click="getInsImgList">获取</button>
