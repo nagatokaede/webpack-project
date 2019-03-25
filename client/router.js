@@ -6,6 +6,7 @@ import VueRouter from "vue-router";
 // 引入组件
 import Home from "./page/Home.vue";
 import Tool from "./page/Tool.vue";
+import LeaveMessage from "./page/leaveMessage.vue";
 
 // 要告诉 vue 使用 vueRouter
 Vue.use(VueRouter);
@@ -18,6 +19,10 @@ const routes = [
   {
     path:"/tool",
     component: Tool
+  },
+  {
+    path:"/leaveMessage",
+    component: LeaveMessage
   },
   // 重定向
   {

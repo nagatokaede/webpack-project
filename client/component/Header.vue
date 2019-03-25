@@ -28,6 +28,10 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><router-link class="text-center" to="tool">Tool</router-link></li>
                     </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><router-link class="text-center" to="leaveMessage">留言</router-link></li>
+                    </ul>
                 </div><!-- /.navbar-collapse -->
 
             </div><!-- /.container-fluid -->
