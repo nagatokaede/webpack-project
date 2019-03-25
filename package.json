@@ -20,6 +20,7 @@
     "md5": "^2.2.1",
     "mini-css-extract-plugin": "^0.5.0",
     "mongoose": "^5.4.19",
+    "request": "^2.88.0",
     "terser": "^3.16.1",
     "vue": "^2.6.7",
     "vue-loader": "^15.6.4",

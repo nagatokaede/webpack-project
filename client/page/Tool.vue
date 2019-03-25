@@ -11,15 +11,25 @@
                     <p>md5 加密：{{ dateContent.md5 }}</p>
                     <p>md5 加密截取后24位：{{ dateContent.md5_24 }}</p>
                 </div>
-            </div>
 
-            <div class="form-inline">
-                <div class="form-group">
-                    <div class="input-group">
+                <div>
+                    <div class="col-xs-12 col-md-10">
                         <input type="text" class="form-control" placeholder="输入 Instagram 地址" v-model="requestBody.url">
                     </div>
+                    <div class="col-xs-12 col-md-2">
+                        <button type="button" class="btn btn-primary btn-block" @click="getInsImgList">获取</button>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-primary" @click="getInsImgList">获取</button>
+
+                <div class="col-xs-12" style="padding-top: 20px;">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <template v-for="item in responseDate.data">
+                                <img :src="item" class="img-responsive" alt="Responsive image">
+                            </template>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -44,7 +54,7 @@
           url: '',
         },
         responseDate: {
-
+          data: []
         }
       }
     },
@@ -66,10 +76,9 @@
       },
 
       /* ------ api 调用 -------- */
-      getInsImgList(callback) {
+      getInsImgList() {
         this.getInstagramSpider(this.requestBody).then(res => {
           this.responseDate = res;
-          if (callback) callback(res);
         });
       },
 
