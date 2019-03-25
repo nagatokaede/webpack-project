@@ -24,8 +24,9 @@
                 <div class="col-xs-12" style="padding-top: 20px;">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <template v-for="item in responseDate.data">
+                            <template v-for="item in insImages">
                                 <img :src="item" class="img-responsive" alt="Responsive image">
+                                {{ item }}
                             </template>
                         </div>
                     </div>
@@ -38,6 +39,7 @@
 <script>
   import md5 from 'md5';
   import filter from '../util/tool.js';
+
   export default {
     name: 'Tool',
 
@@ -56,6 +58,16 @@
         responseDate: {
           data: []
         }
+      }
+    },
+
+    computed: {
+      insImages() {
+        let content = [];
+        if (this.requestBody.url.length) {
+          content = this.requestBody.url;
+        }
+        return content;
       }
     },
 
