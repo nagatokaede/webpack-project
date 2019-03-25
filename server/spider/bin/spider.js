@@ -9,7 +9,7 @@ const getHtml = url => {
         const content = body.match(reg);
         const urlList = [];
         for (const i in content) {
-          urlList.push(content[i].split('display_url":"')[1]);
+          if (i) urlList.push(content[i].split('display_url":"')[1]);
         }
         resolve(urlList);
       }
