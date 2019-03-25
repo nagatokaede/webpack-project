@@ -13,21 +13,21 @@
                 </div>
             </div>
 
-            <form class="form-inline">
+            <div class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="输入 Instagram 地址" v-model="requestBody.url">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" @click="getInsImgList">获取</button>
-            </form>
+                <button type="button" class="btn btn-primary" @click="getInsImgList">获取</button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
   import md5 from 'md5';
-  import filter from '../uitl/tool.js';
+  import filter from '../util/tool.js';
   export default {
     name: 'Tool',
 

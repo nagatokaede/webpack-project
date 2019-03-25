@@ -58,7 +58,7 @@
 
 <script>
   import md5 from 'md5';
-  import filter from '../uitl/tool.js';
+  import filter from '../util/tool.js';
   export default {
     name: 'LeaveMessage',
 
