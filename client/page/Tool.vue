@@ -13,20 +13,20 @@
                 </div>
 
                 <div>
-                    <div class="col-xs-12 col-md-10">
+                    <div class="col-xs-12 col-md-10" style="padding-bottom: 20px;">
                         <input type="text" class="form-control" placeholder="输入 Instagram 地址" v-model="requestBody.url">
                     </div>
-                    <div class="col-xs-12 col-md-2">
+                    <div class="col-xs-12 col-md-2" style="padding-bottom: 20px;">
                         <button type="button" class="btn btn-primary btn-block" @click="getInsImgList">获取</button>
                     </div>
                 </div>
 
-                <div class="col-xs-12" style="padding-top: 20px;">
+                <div class="col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <template v-for="item in responseDate.data">
+                            <div v-for="item in responseDate.data" style="padding: 10px;">
                                 <img :src="item" class="img-responsive" alt="Responsive image">
-                            </template>
+                            </div>
                         </div>
                     </div>
                 </div>
