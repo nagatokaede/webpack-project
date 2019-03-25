@@ -12,6 +12,15 @@
                     <p>md5 加密截取后24位：{{ dateContent.md5_24 }}</p>
                 </div>
             </div>
+
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="url" class="form-control" placeholder="输入 Instagram 地址" v-model="reqBody.url">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" @click="getInsImgList">获取</button>
+            </form>
         </div>
     </div>
 </template>
@@ -31,48 +40,38 @@
           md5_24: '',
         },
 
-        editor: '', // 保存 simditor 对象
-        toolbar: [
-          'bold',
-          'italic',
-          'underline',
-          'strikethrough',
-          'fontScale',
-          'ol',
-          'ul',
-          'blockquote',
-          'hr',
-          'indent',
-          'outdent',
-          'alignment',
-        ], // 自定义工具栏
-
-        query: {
-          pageIndex: 1,
-          pageSize: 10
+        requestBody: {
+          url: '',
         },
         responseDate: {
-          pageData: [],
-          totalCount: 0
-        },
 
-        requestBody: {
-          createBy: '',
-          message: '',
-          style: 'default'
-        },
-
-        deleteBody: {
-          id: '',
-          updateBy: 'kaede'
         }
       }
     },
 
     methods: {
       /* -------- api ---------- */
+      getInstagramSpider(body) {
+        return new Promise((resolve, reject) => {
+          this.$axios.getInstagramSpider(body).then(res => {
+            const data = res.data;
+            if (data.description === 'SUCCESS') {
+              resolve(data.data);
+            } else {
+              alert(data.description);
+              reject(data.description);
+            }
+          });
+        });
+      },
 
       /* ------ api 调用 -------- */
+      getInsImgList(callback) {
+        this.getInstagramSpider(this.requestBody).then(res => {
+          this.responseDate = res;
+          if (callback) callback(res);
+        });
+      },
 
       /* -------- 工具 ---------- */
       dateMD5() {

@@ -2,6 +2,7 @@
 
 const Route = require('koa-router');
 const { leaveMessageInsert, leaveMessageDelete, leaveMessageFindByPage} = require('../mongo/util/leaveMessage');
+const insSpider = require('../spider/bin/spider');
 
 const logPath = (ctx, method) => {
   console.log(`请求方式 ${method} 请求地址 ${ctx.url} 并返回数据成功！`);
@@ -83,8 +84,27 @@ leaveMessage.put('/', async ctx => {
   ctx.body = docs;
 });
 
+// instagram spider ------------------------------------------
+const instagramSpider = new Route();
+instagramSpider.post('/', async ctx => {
+  let docs = {};
+  try {
+    docs = {
+      data: await insSpider(ctx.request.body.url),
+      description: 'SUCCESS'
+    }
+  } catch (err) {
+    docs = {
+      description: err
+    }
+  }
+
+  ctx.body = docs;
+});
+
 // 装载所有路由接口 ---------------------------------------------
 const router = new Route();
+router.use('/instagramSpider', instagramSpider.routes(), instagramSpider.allowedMethods());
 router.use('/leaveMessage', leaveMessage.routes(), leaveMessage.allowedMethods());
 router.use('/test', test.routes(), test.allowedMethods());
 
