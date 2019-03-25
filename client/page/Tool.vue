@@ -24,9 +24,8 @@
                 <div class="col-xs-12" style="padding-top: 20px;">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <template v-for="item in insImages">
+                            <template v-for="item in responseDate.data">
                                 <img :src="item" class="img-responsive" alt="Responsive image">
-                                {{ item }}
                             </template>
                         </div>
                     </div>
@@ -58,16 +57,6 @@
         responseDate: {
           data: []
         }
-      }
-    },
-
-    computed: {
-      insImages() {
-        let content = [];
-        if (this.responseDate.data.length) {
-          content = this.responseDate.data;
-        }
-        return content;
       }
     },
 
