@@ -64,8 +64,8 @@
     computed: {
       insImages() {
         let content = [];
-        if (this.requestBody.url.length) {
-          content = this.requestBody.url;
+        if (this.responseDate.data.length) {
+          content = this.responseDate.data;
         }
         return content;
       }
