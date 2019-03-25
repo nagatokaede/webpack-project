@@ -90,7 +90,7 @@
       /* ------ api 调用 -------- */
       getInsImgList() {
         this.getInstagramSpider(this.requestBody).then(res => {
-          this.responseDate = res;
+          this.responseDate.data = res;
         });
       },
 
