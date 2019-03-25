@@ -1,8 +1,7 @@
 'use static';
 
 const Route = require('koa-router');
-const findLeaveMessage = require('../mongo/util/findLeaveMessage');
-const insertLeaveMessage = require('../mongo/util/insertLeaveMessage');
+const { leaveMessageInsert, leaveMessageDelete, leaveMessageFindByPage} = require('../mongo/util/leaveMessage');
 
 const logPath = (ctx, method) => {
   console.log(`请求方式 ${method} 请求地址 ${ctx.url} 并返回数据成功！`);
@@ -40,7 +39,7 @@ leaveMessage.get('/', async ctx => {
   let docs = {};
   try {
     docs = {
-      data: await findLeaveMessage(ctx.query),
+      data: await leaveMessageFindByPage(ctx.query),
       description: 'SUCCESS'
     }
   } catch (err) {
@@ -52,12 +51,11 @@ leaveMessage.get('/', async ctx => {
   ctx.body = docs;
 });
 
-
 leaveMessage.post('/', async ctx => {
   let docs = {};
   try {
     docs = {
-      data: await insertLeaveMessage(ctx.request.body),
+      data: await leaveMessageInsert(ctx.request.body),
       description: 'SUCCESS'
     }
   } catch (err) {
@@ -66,6 +64,22 @@ leaveMessage.post('/', async ctx => {
     }
   }
   
+  ctx.body = docs;
+});
+
+leaveMessage.put('/', async ctx => {
+  let docs = {};
+  try {
+    docs = {
+      data: await leaveMessageDelete(ctx.request.body),
+      description: 'SUCCESS'
+    }
+  } catch (err) {
+    docs = {
+      description: err
+    }
+  }
+
   ctx.body = docs;
 });
 

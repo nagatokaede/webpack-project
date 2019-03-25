@@ -21,6 +21,9 @@
                                         <span class="panel-title">
                                             {{ item.createBy }}
                                         </span>
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true" @click="deleteLeaveMessage(item._id)"
+                                              style="float: right; line-height: 18px; padding-left:10px; cursor: pointer;">
+                                        </span>
                                         <span class="panel-title" style="float: right;">
                                             {{ item.createTime }}
                                         </span>
@@ -107,6 +110,11 @@
           createBy: '',
           message: '',
           style: 'default'
+        },
+
+        deleteBody: {
+          id: '',
+          updateBy: 'kaede'
         }
       }
     },
@@ -141,17 +149,38 @@
         });
       },
 
+      leaveMessageDelete(body) {
+        return new Promise((resolve, reject) => {
+          this.$axios.leaveMessageDelete(body).then(res => {
+            const data = res.data;
+            if (data.description === 'SUCCESS') {
+              resolve(data.data);
+            } else {
+              alert(data.description);
+              reject(data.description);
+            }
+          });
+        });
+      },
+
       /* ------ api 调用 -------- */
       getLeaveMessageList() {
         this.leaveMessageFindByPage().then(res => {
-          console.info(res);
           this.responseDate = res;
         });
       },
 
       createLeaveMessage(callback) {
         this.leaveMessageInsert(this.requestBody).then(res => {
-          console.info(res);
+          this.getLeaveMessageList();
+          if (callback) callback(res);
+        });
+      },
+
+      deleteLeaveMessage(id, callback) {
+        this.deleteBody.id = id;
+        this.leaveMessageDelete(this.deleteBody).then(res => {
+          this.getLeaveMessageList();
           if (callback) callback(res);
         });
       },
@@ -178,20 +207,21 @@
 
       getEdit() {
         this.requestBody.message = this.editor.sync();
-        this.createLeaveMessage(() => {
-          this.getLeaveMessageList();
-        });
+        this.createLeaveMessage();
       },
     },
+
     // 创建完毕
     created() {
       this.dateMD5();
       this.getLeaveMessageList();
     },
+
     // 挂载之前
     beforeMount() {
 
     },
+
     // 挂载结束
     mounted() {
       this.createEditor();

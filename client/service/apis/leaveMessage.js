@@ -10,3 +10,8 @@ export const leaveMessageInsert = body => api.post(
   '/leaveMessage/',
   body
 );
+
+export const leaveMessageDelete = body => api.put(
+  '/leaveMessage/',
+  body
+);

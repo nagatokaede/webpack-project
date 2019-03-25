@@ -6,7 +6,7 @@ class instance {
   constructor(baseURL) {
     this.axios = axios.create({
       baseURL: baseURL,
-      timeout: 1000,
+      timeout: 3000,
     });
   };
   
@@ -35,5 +35,5 @@ class instance {
   };
 }
 
-export const api = new instance('https://kaede.nagato.top/');
-// export const api = new instance('https://localhost/');
+// export const api = new instance('https://kaede.nagato.top/');
+export const api = new instance('https://localhost/');

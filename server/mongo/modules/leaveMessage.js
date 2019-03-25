@@ -23,7 +23,6 @@ const leaveMessageSchema = mongoose.Schema({
     type: String,
     default: '匿名者'
   },
-  userIP: String,
   message: String,
   style: {
     type: String,
