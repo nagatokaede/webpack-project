@@ -8,8 +8,8 @@ const getHtml = url => {
         const reg = /(display_url":")[a-zA-z]+:\/\/[^"]*/ig;
         const content = body.match(reg);
         const urlList = [];
-        for (const i in content) {
-          if (i) urlList.push(content[i].split('display_url":"')[1]);
+        for (let i = 1; i < content.length; i++) {
+          urlList.push(content[i].split('display_url":"')[1]);
         }
         resolve(urlList);
       }
