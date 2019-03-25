@@ -6,6 +6,7 @@ const getHtml = url => {
     if (!err && res.statusCode === 200) {
       const reg = /(display_url":")[a-zA-z]+:\/\/[^"]*/ig;
       const content = body.match(reg);
+      console.log(content);
       const urlList = [];
       for (const i in content) {
         urlList.push(content[i].split('display_url":"')[1]);
