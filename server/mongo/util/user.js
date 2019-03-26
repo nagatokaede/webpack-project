@@ -23,10 +23,19 @@ const userHistoryInsert = body => {
     createUserHistory.save(err => { // 保存数据
       if (err) {
         reject({
-          message: '操作记录失败' + err
+          data: {
+            message: '操作记录失败',
+            err: err,
+          },
+          description: 'DEFEAT',
         });
       } else {
-        resolve(createUserHistory);
+        resolve({
+          data: {
+            data: createUserHistory,
+          },
+          description: 'SUCCESS',
+        });
       }
     });
   });
@@ -66,21 +75,30 @@ const userFind = body => {
         docs = '密码错误！';
       }
       if (status) {
-        reject({
-          status: status,
-          message: docs
+        resolve({
+          data: {
+            status: status,
+            message: docs,
+          },
+          description: 'DEFEAT',
         });
       } else {
         resolve({
-          status: status,
-          message: docs
+          data: {
+            data: docs,
+          },
+          description: 'SUCCESS',
         });
       }
     }).
     catch(err => {
       console.warn('用户查询失败：' + err);
       reject({
-        message: '用户查询失败' + err
+        data: {
+          message: '用户查询失败',
+          err: err,
+        },
+        description: 'DEFEAT',
       });
     });
   });
@@ -99,7 +117,7 @@ const userInsert = body => {
   return new Promise((resolve, reject) => {
     userFind(body).
     then(res => {
-      if (res.status === 1) {
+      if (res.data.status === 1) {
         const createUser = new userModel({
           userName: body.userName,
           password: hash(body.password),
@@ -109,7 +127,11 @@ const userInsert = body => {
           if (err) {
             console.warn('新增用户失败：' + err);
             reject({
-              message: '用户查询失败' + err
+              data: {
+                message: '新增用户失败',
+                err: err,
+              },
+              description: 'DEFEAT',
             });
           } else {
             userHistoryInsert({
@@ -118,7 +140,10 @@ const userInsert = body => {
               updateInfo: '新增用户'
             }); // 记录操作历史
             resolve({
-              message: '新增用户成功！'
+              data: {
+                message: '新增用户成功',
+              },
+              description: 'SUCCESS',
             });
           }
         });
@@ -126,12 +151,21 @@ const userInsert = body => {
       } else {
         console.warn(res);
         reject({
-          message: '用户已存在！'
+          data: {
+            message: '用户已存在',
+          },
+          description: 'DEFEAT',
         });
       }
     }).
     catch(err => {
-      reject(err);
+      reject({
+        data: {
+          message: '用户已存在',
+          err: err,
+        },
+        description: 'DEFEAT',
+      });
     });
   });
 };
@@ -162,19 +196,39 @@ const userChangePassword = body => {
             updateInfo: '修改密码'
           }); // 记录操作历史
           resolve({
-            message: '修改密码成功！'
+            data: {
+              message: '修改密码成功',
+            },
+            description: 'SUCCESS',
           });
         }).
         catch(err => {
           console.warn('修改密码失败：' + err);
-          reject(err);
+          reject({
+            data: {
+              message: '修改密码失败',
+              err: err,
+            },
+            description: 'DEFEAT',
+          });
         });
       } else {
-        resolve(res);
+        resolve({
+          data: {
+            data: res,
+          },
+          description: 'SUCCESS',
+        });
       }
     }).
     catch(err => {
-      reject(err);
+      reject({
+        data: {
+          message: '修改密码失败',
+          err: err,
+        },
+        description: 'DEFEAT',
+      });
     });
   });
 };

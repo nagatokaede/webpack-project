@@ -14,9 +14,22 @@ const getHtml = url => {
         for (let i = 1; i < content.length; i++) {
           urlList.push(content[i].split('display_url":"')[1]);
         }
-        resolve(urlList);
+        resolve({
+          data: {
+            data: urlList,
+          },
+          description: 'SUCCESS',
+        });
       }
-      if (err) reject(err);
+      if (err) {
+        reject({
+          data: {
+            message: '爬取失败',
+            err: err,
+          },
+          description: 'DEFEAT',
+        });
+      }
     });
   });
 };

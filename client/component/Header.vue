@@ -23,7 +23,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <p class="navbar-text text-center navbar-right">
                         <span v-if="$store.userInfo" @click="logout">{{ $store.userInfo.nickName }}</span>
-                        <router-link v-else to="register">輝きの庭へようこそ</router-link>
+                        <router-link v-else to="login">輝きの庭へようこそ</router-link>
                     </p>
 
                     <ul class="nav navbar-nav navbar-right">

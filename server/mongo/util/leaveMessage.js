@@ -17,10 +17,19 @@ const leaveMessageHistoryInsert = body => {
     createLeaveMessageHistory.save(err => { // 保存数据
       if (err) {
         reject({
-          message: '操作记录失败' + err
+          data: {
+            message: '操作记录失败',
+            err: err,
+          },
+          description: 'DEFEAT',
         });
       } else {
-        resolve(createLeaveMessageHistory);
+        resolve({
+          data: {
+            data: createLeaveMessageHistory,
+          },
+          description: 'SUCCESS',
+        });
       }
     });
   });
@@ -48,14 +57,22 @@ const leaveMessageFindByPage = query => {
     }).
     then(docs => {
       resolve({
-        pageData: docs,
-        totalCount: docs.length
+        data: {
+          pageData: docs,
+          totalCount: docs.length,
+        },
+        description: 'SUCCESS',
       });
+      
     }).
     catch(err => {
       console.warn('分页查询留言表失败：' + err);
       reject({
-        message: '分页查询留言表失败' + err
+        data: {
+          message: '分页查询留言表失败',
+          err: err,
+        },
+        description: 'DEFEAT',
       });
     });
   });
@@ -80,7 +97,11 @@ const leaveMessageInsert = body => {
     createLeaveMessage.save(err => { // 保存数据
       if (err) {
         reject({
-          message: '新增留言失败' + err
+          data: {
+            message: '新增留言失败',
+            err: err,
+          },
+          description: 'DEFEAT',
         });
       } else {
         leaveMessageHistoryInsert({
@@ -89,7 +110,10 @@ const leaveMessageInsert = body => {
           updateInfo: '新增留言'
         }); // 记录操作历史
         resolve({
-          message: '新增留言成功！'
+          data: {
+            message: '新增留言成功！'
+          },
+          description: 'SUCCESS',
         });
       }
     });
@@ -116,12 +140,21 @@ const leaveMessageDelete = body => {
         updateInfo: '删除留言'
       }); // 记录操作历史
       resolve({
-        message: '删除留言成功！'
+        data: {
+          message: '删除留言成功！'
+        },
+        description: 'SUCCESS',
       });
     }).
     catch(err => {
       console.warn('删除留言失败：' + err);
-      reject(err);
+      reject({
+        data: {
+          message: '删除留言失败',
+          err: err,
+        },
+        description: 'DEFEAT',
+      });
     });
   });
 };

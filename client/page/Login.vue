@@ -3,8 +3,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-xs-12">
-                    <h2>輝きの庭へようこそ</h2>
-                    <p>没有账号？ <router-link to="register">注册</router-link></p>
+                    <div class="col-xs-12">
+                        <h2>輝きの庭へようこそ</h2>
+                        <p>没有账号？ <router-link to="register">注册</router-link></p>
+                    </div>
                 </div>
 
                 <form class="col-md-8 col-xs-12">

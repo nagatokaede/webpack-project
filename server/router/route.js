@@ -14,15 +14,9 @@ const logPath = (ctx, method) => {
 const returnDocs = async (callback) => {
   let docs = {};
   try {
-    docs = {
-      data: await callback,
-      description: 'SUCCESS'
-    }
+    docs = await callback;
   } catch (err) {
-    docs = {
-      data: err,
-      description: 'DEFEAT'
-    }
+    docs = err;
   }
   return docs;
 };
