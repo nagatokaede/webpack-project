@@ -22,7 +22,8 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <p class="navbar-text text-center navbar-right">
-                        <router-link to="home">輝きの庭へようこそ</router-link>
+                        <span v-if="$store.userInfo" @click="logout">{{ $store.userInfo.nickName }}</span>
+                        <router-link v-else to="register">輝きの庭へようこそ</router-link>
                     </p>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -48,7 +49,14 @@
 
     data() {
       return {
-        icon
+        icon,
+      }
+    },
+
+    methods: {
+      logout() {
+        this.$store.userInfo = '';
+        this.$router.push('/login');
       }
     }
   }

@@ -118,8 +118,8 @@
             if (data.description === 'SUCCESS') {
               resolve(data.data);
             } else {
-              alert(data.description);
-              reject(data.description);
+              alert(data.data.message);
+              reject(data.data);
             }
           });
         });
@@ -132,8 +132,8 @@
             if (data.description === 'SUCCESS') {
               resolve(data.data);
             } else {
-              alert(data.description);
-              reject(data.description);
+              alert(data.data.message);
+              reject(data.data);
             }
           });
         });
@@ -146,8 +146,8 @@
             if (data.description === 'SUCCESS') {
               resolve(data.data);
             } else {
-              alert(data.description);
-              reject(data.description);
+              alert(data.data.message);
+              reject(data.data);
             }
           });
         });

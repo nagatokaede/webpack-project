@@ -16,7 +16,9 @@ const leaveMessageHistoryInsert = body => {
     const createLeaveMessageHistory = new leaveMessageHistoryModel(body);
     createLeaveMessageHistory.save(err => { // 保存数据
       if (err) {
-        reject(err);
+        reject({
+          message: '操作记录失败' + err
+        });
       } else {
         resolve(createLeaveMessageHistory);
       }
@@ -52,7 +54,9 @@ const leaveMessageFindByPage = query => {
     }).
     catch(err => {
       console.warn('分页查询留言表失败：' + err);
-      reject(err);
+      reject({
+        message: '分页查询留言表失败' + err
+      });
     });
   });
 };
@@ -75,7 +79,9 @@ const leaveMessageInsert = body => {
     });
     createLeaveMessage.save(err => { // 保存数据
       if (err) {
-        reject(err);
+        reject({
+          message: '新增留言失败' + err
+        });
       } else {
         leaveMessageHistoryInsert({
           leaveMessageId: createLeaveMessage._id,
