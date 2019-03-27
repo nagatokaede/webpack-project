@@ -22,7 +22,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <p class="navbar-text text-center navbar-right">
-                        <span v-if="$store.userInfo" @click="logout">{{ $store.userInfo.nickName }}</span>
+                        <a v-if="userInfo" @click="logout">{{ userInfo.nickName }}</a>
                         <router-link v-else to="login">輝きの庭へようこそ</router-link>
                     </p>
 
@@ -53,9 +53,15 @@
       }
     },
 
+    computed: {
+      userInfo() {
+        return this.$store.state.userInfo;
+      },
+    },
+
     methods: {
       logout() {
-        this.$store.userInfo = '';
+        this.$store.commit('setUserInfo');
         this.$router.push('/login');
       }
     }

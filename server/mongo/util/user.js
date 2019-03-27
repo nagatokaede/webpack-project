@@ -62,7 +62,6 @@ const userFind = body => {
     }).
     then(docs => {
       let status = 0;
-      console.info('查询用户1', docs);
       if (!docs) {
         status = 1;
         docs = '用户名不存在！';

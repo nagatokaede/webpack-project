@@ -68,7 +68,8 @@
             localStorage[ 'login-password' ] = this.requestBody.password;
             localStorage[ 'login-remember' ] = this.remember;
           }
-          this.$store.userInfo = res.message;
+          this.$store.commit('increment');
+          this.$store.commit('setUserInfo', res.data);
           this.$router.push('/');
         });
       },
