@@ -28,12 +28,12 @@
                 </div>
 
                 <div>
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <input type="text" class="form-control" v-model="requestBody.createBy" placeholder="用户名">
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
+                    <div class="form-group col-xs-12">
+                        <!--<div class="form-group">-->
+                            <!--<input type="text" class="form-control" v-model="requestBody.createBy" placeholder="用户名">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-xs-6">-->
                         <select class="form-control" v-model="requestBody.style">
                             <option value="default">default</option>
                             <option value="primary" style="color: #fff; background-color: #337ab7">primary</option>
@@ -64,6 +64,7 @@
 
     data() {
       return {
+        userInfo: this.$store.state.userInfo,
         dateContent: {
           date: '',
           dateParse: '',
@@ -97,7 +98,7 @@
         },
 
         requestBody: {
-          createBy: '',
+          createBy: '匿名者',
           message: '',
           style: 'default'
         },
@@ -161,6 +162,7 @@
       },
 
       createLeaveMessage(callback) {
+        if (this.userInfo) this.requestBody.createBy = this.userInfo.nickName;
         this.leaveMessageInsert(this.requestBody).then(res => {
           this.getLeaveMessageList();
           if (callback) callback(res);

@@ -9,6 +9,23 @@ const hash = data => {
   return crypto.createHmac('sha256', 'hotcake').update(data).digest('hex');
 };
 
+const responseDataModel = (flag, data, message) => {
+  const content = {
+    data: {},
+    description: '',
+  };
+  if (flag) {
+    content.description = 'SUCCESS';
+    content.data = data;
+  } else {
+    console.warn('message' + data);
+    content.description = 'DEFEAT';
+    content.data = data;
+    content.data.message = message;
+  }
+  return content;
+};
+
 /*
  * ------- 用户操作记录表 ---------
  * body {
@@ -22,20 +39,9 @@ const userHistoryInsert = body => {
     const createUserHistory = new userHistoryModel(body);
     createUserHistory.save(err => { // 保存数据
       if (err) {
-        reject({
-          data: {
-            message: '操作记录失败',
-            err: err,
-          },
-          description: 'DEFEAT',
-        });
+        reject(responseDataModel(false, { err: err }, '操作记录失败'));
       } else {
-        resolve({
-          data: {
-            data: createUserHistory,
-          },
-          description: 'SUCCESS',
-        });
+        resolve(responseDataModel(true, { data: createUserHistory}));
       }
     });
   });
@@ -69,36 +75,17 @@ const userFind = body => {
         status = 2;
         docs = '用户已注销！';
       } else if (docs.password !==  hash(body.password)) {
-        console.log(docs.password, hash(body.password));
         status = 3;
         docs = '密码错误！';
       }
       if (status) {
-        resolve({
-          data: {
-            status: status,
-            message: docs,
-          },
-          description: 'DEFEAT',
-        });
+        resolve(responseDataModel(false, { status: status }, docs));
       } else {
-        resolve({
-          data: {
-            data: docs,
-          },
-          description: 'SUCCESS',
-        });
+        resolve(responseDataModel(true, { data: docs }));
       }
     }).
     catch(err => {
-      console.warn('用户查询失败：' + err);
-      reject({
-        data: {
-          message: '用户查询失败',
-          err: err,
-        },
-        description: 'DEFEAT',
-      });
+      reject(responseDataModel(false, { err: err }, '用户查询失败'));
     });
   });
 };
@@ -114,57 +101,39 @@ const userFind = body => {
  */
 const userInsert = body => {
   return new Promise((resolve, reject) => {
+    // 查找用户
     userFind(body).
     then(res => {
       if (res.data.status === 1) {
+        // 创建用户数据
         const createUser = new userModel({
           userName: body.userName,
           password: hash(body.password),
           nickName: body.nickName
         });
-        createUser.save(err => { // 保存数据
+        // 保存数据
+        createUser.save(err => {
           if (err) {
-            console.warn('新增用户失败：' + err);
-            reject({
-              data: {
-                message: '新增用户失败',
-                err: err,
-              },
-              description: 'DEFEAT',
-            });
+            reject(responseDataModel(false, { err: err }, '新增用户失败'));
           } else {
+            // 记录操作历史
             userHistoryInsert({
               userId: createUser._id,
               updateBy: createUser.userName,
               updateInfo: '新增用户'
-            }); // 记录操作历史
-            resolve({
-              data: {
-                message: '新增用户成功',
-              },
-              description: 'SUCCESS',
+            }).then(() => {
+              resolve(responseDataModel(true, { message: '新增用户成功' }));
+            }).catch((err) => {
+              reject(err);
             });
           }
         });
-
       } else {
-        console.warn(res);
-        reject({
-          data: {
-            message: '用户已存在',
-          },
-          description: 'DEFEAT',
-        });
+        resolve(res);
       }
     }).
     catch(err => {
-      reject({
-        data: {
-          message: '用户已存在',
-          err: err,
-        },
-        description: 'DEFEAT',
-      });
+      reject(err);
     });
   });
 };
@@ -181,6 +150,7 @@ const userInsert = body => {
  */
 const userChangePassword = body => {
   return new Promise((resolve, reject) => {
+    // 查找用户
     userFind(body).
     then(res => {
       if (res.status === 0) {
@@ -189,45 +159,26 @@ const userChangePassword = body => {
           {$set: { 'password': hash(body.newPassword) }}
         ).
         then(() => {
+          // 记录操作历史
           userHistoryInsert({
             userId: res.data._id,
             updateBy: res.data.userName,
             updateInfo: '修改密码'
-          }); // 记录操作历史
-          resolve({
-            data: {
-              message: '修改密码成功',
-            },
-            description: 'SUCCESS',
+          }).then(() => {
+            resolve(responseDataModel(true, { message: '修改密码成功' }));
+          }).catch(err => {
+            reject(err);
           });
         }).
         catch(err => {
-          console.warn('修改密码失败：' + err);
-          reject({
-            data: {
-              message: '修改密码失败',
-              err: err,
-            },
-            description: 'DEFEAT',
-          });
+          reject(responseDataModel(false, { err: err }, '修改密码失败'));
         });
       } else {
-        resolve({
-          data: {
-            data: res,
-          },
-          description: 'SUCCESS',
-        });
+        resolve(res);
       }
     }).
     catch(err => {
-      reject({
-        data: {
-          message: '修改密码失败',
-          err: err,
-        },
-        description: 'DEFEAT',
-      });
+      reject(err);
     });
   });
 };
@@ -242,23 +193,25 @@ const userChangePassword = body => {
  */
 const userDelete = body => {
   return new Promise((resolve, reject) => {
+    // 删除用户
     userModel.updateOne(
       {_id: body.id},
       {$set: { 'delete': true }}
     ).
     then(() => {
+      // 记录操作历史
       userHistoryInsert({
         userId: body.id,
         updateBy: body.createBy,
         updateInfo: '删除用户'
-      }); // 记录操作历史
-      resolve({
-        message: '删除用户成功！'
+      }).then(() => {
+        resolve(responseDataModel(true, { message: '删除用户成功' }));
+      }).catch(err => {
+        reject(err);
       });
     }).
     catch(err => {
-      console.warn('删除用户失败：' + err);
-      reject(err);
+      reject(responseDataModel(false, { err: err }, '删除用户失败'));
     });
   });
 };

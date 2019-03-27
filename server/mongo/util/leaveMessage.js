@@ -3,6 +3,24 @@
 const { leaveMessageModel, leaveMessageHistoryModel } = require('../modules/leaveMessage');
 
 
+const responseDataModel = (flag, data, message) => {
+  const content = {
+    data: {},
+    description: '',
+  };
+  if (flag) {
+    content.description = 'SUCCESS';
+    content.data = data;
+  } else {
+    console.warn('message' + data);
+    content.description = 'DEFEAT';
+    content.data = data;
+    content.data.message = message;
+  }
+  return content;
+};
+
+
 /*
  * ------- 留言操作记录表 ---------
  * body {
@@ -16,20 +34,9 @@ const leaveMessageHistoryInsert = body => {
     const createLeaveMessageHistory = new leaveMessageHistoryModel(body);
     createLeaveMessageHistory.save(err => { // 保存数据
       if (err) {
-        reject({
-          data: {
-            message: '操作记录失败',
-            err: err,
-          },
-          description: 'DEFEAT',
-        });
+        reject(responseDataModel(false, { err: err }, '操作记录失败'));
       } else {
-        resolve({
-          data: {
-            data: createLeaveMessageHistory,
-          },
-          description: 'SUCCESS',
-        });
+        resolve(responseDataModel(true, { data: createLeaveMessageHistory }));
       }
     });
   });
@@ -56,24 +63,13 @@ const leaveMessageFindByPage = query => {
       style: 1,
     }).
     then(docs => {
-      resolve({
-        data: {
-          pageData: docs,
-          totalCount: docs.length,
-        },
-        description: 'SUCCESS',
-      });
-      
+      resolve(responseDataModel(true, {
+        pageData: docs,
+        totalCount: docs.length,
+      }));
     }).
     catch(err => {
-      console.warn('分页查询留言表失败：' + err);
-      reject({
-        data: {
-          message: '分页查询留言表失败',
-          err: err,
-        },
-        description: 'DEFEAT',
-      });
+      reject(responseDataModel(false, { err: err }, '分页查询留言表失败'));
     });
   });
 };
@@ -96,24 +92,17 @@ const leaveMessageInsert = body => {
     });
     createLeaveMessage.save(err => { // 保存数据
       if (err) {
-        reject({
-          data: {
-            message: '新增留言失败',
-            err: err,
-          },
-          description: 'DEFEAT',
-        });
+        reject(responseDataModel(false, { err: err }, '新增留言失败'));
       } else {
+        // 记录操作历史
         leaveMessageHistoryInsert({
           leaveMessageId: createLeaveMessage._id,
           updateBy: createLeaveMessage.createBy,
           updateInfo: '新增留言'
-        }); // 记录操作历史
-        resolve({
-          data: {
-            message: '新增留言成功！'
-          },
-          description: 'SUCCESS',
+        }).then(() => {
+          resolve(responseDataModel(true, { message: '新增留言成功！' }));
+        }).catch(err => {
+          reject(err);
         });
       }
     });
@@ -129,32 +118,25 @@ const leaveMessageInsert = body => {
  */
 const leaveMessageDelete = body => {
   return new Promise((resolve, reject) => {
+    // 删除留言
     leaveMessageModel.updateOne(
       {_id: body.id},
       {$set: { 'delete': true }}
     ).
     then(() => {
+      // 记录操作历史
       leaveMessageHistoryInsert({
         leaveMessageId: body.id,
         updateBy: body.createBy,
         updateInfo: '删除留言'
-      }); // 记录操作历史
-      resolve({
-        data: {
-          message: '删除留言成功！'
-        },
-        description: 'SUCCESS',
+      }).then(() => {
+        resolve(responseDataModel(true, { message: '删除留言成功！' }));
+      }).catch(err => {
+        reject(err);
       });
     }).
     catch(err => {
-      console.warn('删除留言失败：' + err);
-      reject({
-        data: {
-          message: '删除留言失败',
-          err: err,
-        },
-        description: 'DEFEAT',
-      });
+      reject(responseDataModel(false, { err: err }, '删除留言失败'));
     });
   });
 };

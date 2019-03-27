@@ -6,85 +6,77 @@ const { userFind, userInsert, userChangePassword, userDelete } = require('../mon
 const insSpider = require('../spider/bin/spider');
 
 
-// 工具 -------------------------------------------------------
-const logPath = (ctx, method) => {
-  console.log(`请求方式 ${method} 请求地址 ${ctx.url} 并返回数据成功！`);
-};
-
-const returnDocs = async (callback) => {
-  let docs = {};
-  try {
-    docs = await callback;
-  } catch (err) {
-    docs = err;
-  }
-  return docs;
-};
-
-// 测试用路由端口 -----------------------------------------------
-const test = new Route();
-
-test.get('/', async ctx => {
-  // get 请求测试
-  ctx.body = {
-    data: {
-      message: 'get 端口测试 ok ！',
-    },
-    description: 'SUCCESS'
-  };
-  logPath(ctx, 'GET');
-});
-
-test.post('/', async ctx => {
-  // post 请求测试
-  ctx.body = {
-    data: {
-      message: 'post 端口测试 ok ！',
-    },
-    description: 'SUCCESS'
-  };
-  logPath(ctx, 'POST');
-});
-
 // leave message API -----------------------------------------
 const leaveMessage = new Route();
 
 leaveMessage.get('/', async ctx => {
-  ctx.body = await returnDocs(leaveMessageFindByPage(ctx.query));
+  try {
+    ctx.body = await leaveMessageFindByPage(ctx.query);
+  } catch (err) {
+    ctx.throw(500, err);
+  }
 });
 
 leaveMessage.post('/', async ctx => {
-  ctx.body = await returnDocs(leaveMessageInsert(ctx.request.body));
+  try {
+    ctx.body = await leaveMessageInsert(ctx.request.body);
+  } catch (err) {
+    ctx.throw(500, err);
+  }
 });
 
 leaveMessage.put('/', async ctx => {
-  ctx.body = await returnDocs(leaveMessageDelete(ctx.request.body));
+  try {
+    ctx.body = await leaveMessageDelete(ctx.request.body);
+  } catch (err) {
+    ctx.throw(500, err);
+  }
 });
 
 // leave message API -----------------------------------------
 const user = new Route();
 
 user.post('/login', async ctx => {
-  ctx.body = await returnDocs(userFind(ctx.request.body));
+  try {
+    ctx.body = await userFind(ctx.request.body);
+  } catch (err) {
+    ctx.throw(500, err);
+  }
 });
 
 user.post('/register', async ctx => {
-  ctx.body = await returnDocs(userInsert(ctx.request.body));
+  try {
+    ctx.body = await userInsert(ctx.request.body);
+  } catch (err) {
+    ctx.throw(500, err);
+  }
 });
 
 user.put('/changePassword', async ctx => {
-  ctx.body = await returnDocs(userChangePassword(ctx.request.body));
+  try {
+    ctx.body = await userChangePassword(ctx.request.body);
+  } catch (err) {
+    ctx.throw(500, err);
+  }
 });
 
 user.put('/userDelete', async ctx => {
-  ctx.body = await returnDocs(userDelete(ctx.request.body));
+  try {
+    ctx.body = await userDelete(ctx.request.body);
+  } catch (err) {
+    ctx.throw(500, err);
+  }
 });
 
 // instagram spider ------------------------------------------
 const instagramSpider = new Route();
 
 instagramSpider.post('/', async ctx => {
-  ctx.body = await returnDocs(insSpider(ctx.request.body.url));
+  try {
+    ctx.body = await insSpider(ctx.request.body.url);
+  } catch (err) {
+    ctx.throw(500, err);
+  }
 });
 
 // 装载所有路由接口 ---------------------------------------------
@@ -92,7 +84,6 @@ const router = new Route();
 router.use('/instagramSpider', instagramSpider.routes(), instagramSpider.allowedMethods());
 router.use('/leaveMessage', leaveMessage.routes(), leaveMessage.allowedMethods());
 router.use('/user', user.routes(), user.allowedMethods());
-router.use('/test', test.routes(), test.allowedMethods());
 
 
 module.exports = router;
