@@ -1,6 +1,7 @@
 'use static';
 
 const fs = require('fs');
+const path = require('path');
 const jwt = require('jsonwebtoken');
 
 // 签发 Token
@@ -24,7 +25,7 @@ const verifyHS = (tokenHS, secret) => {
 
 // RS256 非对称算法
 // 读取 公私钥
-const privateKey = fs.readFileSync('../config/private.key');
+const privateKey = fs.readFileSync(path.normalize(__dirname + '/../config/private.key'));
 
 // 输出签发 Token
 const tokenRS = payload => {

@@ -1,6 +1,7 @@
 'use static';
 
 const fs = require('fs');
+const path = require('path');
 const jwt = require('./bin/jwt');
 
 // Token 数据
@@ -15,7 +16,7 @@ const secret = 'hotcake';
 
 // HR256 非对称算法
 // 公钥
-const publicKey = fs.readFileSync('./config/public.key');
+const publicKey = fs.readFileSync(path.normalize(__dirname + '/config/public.key'));
 
 const tokenHS = jwt.tokenHS(payload, secret);
 console.log(tokenHS);

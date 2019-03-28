@@ -21,8 +21,6 @@ const app = new Koa();
 // 强制使用 HTTPS 访问
 app.use(sslify());
 
-console.info(path.normalize(__dirname + '/ssl/kaede.nagato.top.key'));
-
 let options = {
   key: fs.readFileSync(path.normalize(__dirname + '/ssl/kaede.nagato.top.key')),
   cert: fs.readFileSync(path.normalize(__dirname + '/ssl/kaede.nagato.top.pem')),
