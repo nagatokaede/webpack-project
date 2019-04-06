@@ -1,5 +1,5 @@
 <template>
-    <div id="tool">
+    <div class="tool">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-xs-12">

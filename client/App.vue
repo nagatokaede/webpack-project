@@ -33,6 +33,16 @@
         const head = document.getElementsByTagName("head")[0];
         head.appendChild(link);
       },
+
+      reLocation() {
+        console.log(window.location.hostname);
+        if (window.location.hostname === 'nagato.top')
+          window.location.href='https://kaede.nagato.top';
+      },
+    },
+
+    created() {
+      this.reLocation();
     },
 
     // 挂载结束

@@ -1,5 +1,5 @@
 <template>
-    <div id="register">
+    <div class="register">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-xs-12">

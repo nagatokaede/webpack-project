@@ -1,5 +1,5 @@
 <template>
-    <div id="home">
+    <div class="home">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -48,9 +48,9 @@
 </template>
 
 <script>
-  import img_1 from '../asset/images/20190211180753.jpg';
-  import img_2 from '../asset/images/20190211205504.jpg';
-  import img_3 from '../asset/images/20190211180559.jpg';
+  import img_1 from '../asset/images/peipei/20190211180753.jpg';
+  import img_2 from '../asset/images/peipei/20190211205504.jpg';
+  import img_3 from '../asset/images/peipei/20190211180559.jpg';
   export default {
     name: 'Home',
 

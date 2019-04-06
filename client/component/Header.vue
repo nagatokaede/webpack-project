@@ -1,6 +1,5 @@
 <template>
-    <div id="header">
-
+    <div class="header">
         <nav class="navbar navbar-default">
             <div class="container">
             <div class="container-fluid">
@@ -14,7 +13,7 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <router-link class="navbar-brand" to="home">
+                    <router-link class="navbar-brand" to="/home">
                         <img alt="楓" :src="icon" style="width: 20px; height: auto;">
                     </router-link>
                 </div>
@@ -23,15 +22,19 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <p class="navbar-text text-center navbar-right">
                         <a v-if="userInfo" @click="logout">{{ userInfo.nickName }}</a>
-                        <router-link v-else to="login">輝きの庭へようこそ</router-link>
+                        <router-link v-else to="/login">輝きの庭へようこそ</router-link>
                     </p>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li><router-link class="text-center" to="tool">Tool</router-link></li>
+                        <li><router-link class="text-center" to="/tool">Tool</router-link></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li><router-link class="text-center" to="leaveMessage">留言</router-link></li>
+                        <li><router-link class="text-center" to="/leaveMessage">留言</router-link></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><router-link class="text-center" to="/fiction">本</router-link></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
 
@@ -69,5 +72,12 @@
 </script>
 
 <style>
-
+    div.header {
+        position: sticky;
+        z-index: 1;
+        top: 0;
+    }
+    .navbar-default {
+        background-color: rgba(200, 200, 200, .7);
+    }
 </style>

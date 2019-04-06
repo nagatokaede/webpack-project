@@ -3,8 +3,6 @@
 const fs = require('fs');
 const request = require('request');
 
-const src = 'https://www.google.com.hk/images/srpr/logo3w.png';
-
 const imgList = [
   'https://scontent-hkg3-1.cdninstagram.com/vp/edfee20d0c7f69d9f207dd328b22c33e/5D3200DE/t51.2885-15/e35/51292061_313307799377590_859206256567967607_n.jpg?_nc_ht=scontent-hkg3-1.cdninstagram.com',
   'https://scontent-hkg3-1.cdninstagram.com/vp/a72d706bb6b9dd4f73dd806d48ec4b91/5D418068/t51.2885-15/e35/53117275_404251990341445_8862361532893226129_n.jpg?_nc_ht=scontent-hkg3-1.cdninstagram.com',
@@ -22,27 +20,28 @@ const imgList = [
 
 const downImg = imgList => {
   return new Promise((resolve, reject) => {
-      for (let i = 0; i < imgList.length; i++) {
-        const writeStream = fs.createWriteStream('image.png');
+    for (let i = 0; i < imgList.length; i++) {
+      const date = (new Date()).getTime();
 
-        const readStream = request(imgList[i]);
+      const writeStream = fs.createWriteStream(process.cwd() + `/../client/asset/images/down/${date}_${i}.jpg`);
 
-        readStream.pipe(writeStream);
-        readStream.on('end', function() {
-          console.log('文件下载成功');
-        });
+      const readStream = request(imgList[i]);
 
-        readStream.on('error', function() {
-          console.warn('错误信息:' + err);
-        });
+      readStream.pipe(writeStream);
+      readStream.on('end', function() {
+        console.log('文件下载成功');
+      });
 
-        writeStream.on('finish', function() {
-          console.log('文件写入成功');
-          writeStream.end();
-        });
-      }
+      readStream.on('error', function() {
+        console.warn('错误信息:' + err);
+      });
+
+      writeStream.on('finish', function() {
+        console.log('文件写入成功');
+        writeStream.end();
+      });
     }
-  );
+  });
 };
 
 module.exports = downImg;
