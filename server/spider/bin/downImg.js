@@ -3,6 +3,7 @@
 const fs = require('fs');
 const request = require('request');
 
+
 const imgList = [
   'https://scontent-hkg3-1.cdninstagram.com/vp/edfee20d0c7f69d9f207dd328b22c33e/5D3200DE/t51.2885-15/e35/51292061_313307799377590_859206256567967607_n.jpg?_nc_ht=scontent-hkg3-1.cdninstagram.com',
   'https://scontent-hkg3-1.cdninstagram.com/vp/a72d706bb6b9dd4f73dd806d48ec4b91/5D418068/t51.2885-15/e35/53117275_404251990341445_8862361532893226129_n.jpg?_nc_ht=scontent-hkg3-1.cdninstagram.com',
@@ -18,28 +19,41 @@ const imgList = [
   'https://scontent-hkg3-1.cdninstagram.com/vp/80c2ea87aec4b6233c0649a4e0422a3e/5D4F3F0B/t51.2885-15/e35/43915083_254755341856293_8057487291940857181_n.jpg?_nc_ht=scontent-hkg3-1.cdninstagram.com'
 ];
 
+const tool = (url, path) => {
+  return new Promise((resolve, reject) => {
+    const writeStream = fs.createWriteStream(path);
+
+    const readStream = request(url);
+
+    readStream.pipe(writeStream);
+    readStream.on('end', () => {
+      console.log('文件下载成功');
+    });
+
+    readStream.on('error', err => {
+      console.warn('错误信息:' + err);
+      reject({
+        status: 'DEFEAT',
+        err: err,
+        url: url,
+        name: path
+      });
+    });
+
+    writeStream.on('finish', () => {
+      console.log('文件写入成功');
+      writeStream.end();
+      resolve(path);
+    });
+  });
+};
+
 const downImg = imgList => {
   return new Promise((resolve, reject) => {
+    const date = (new Date()).getTime();
     for (let i = 0; i < imgList.length; i++) {
-      const date = (new Date()).getTime();
+      const name = date + '_' + i + '.jpg';
 
-      const writeStream = fs.createWriteStream(process.cwd() + `/../client/asset/images/down/${date}_${i}.jpg`);
-
-      const readStream = request(imgList[i]);
-
-      readStream.pipe(writeStream);
-      readStream.on('end', function() {
-        console.log('文件下载成功');
-      });
-
-      readStream.on('error', function() {
-        console.warn('错误信息:' + err);
-      });
-
-      writeStream.on('finish', function() {
-        console.log('文件写入成功');
-        writeStream.end();
-      });
     }
   });
 };
