@@ -59,6 +59,7 @@
 <script>
   import md5 from 'md5';
   import filter from '../util/tool.js';
+
   export default {
     name: 'LeaveMessage',
 
@@ -183,6 +184,10 @@
           textarea: document.querySelector('textarea'),
           toolbar: this.toolbar
         });
+
+        this.editor.on('valuechanged', () => {
+          this.requestBody.message = this.editor.getValue();
+        }); // valuechanged 是 simditor 自带获取值得方法
       },
 
       dateMD5() {
@@ -198,7 +203,7 @@
       },
 
       getEdit() {
-        this.requestBody.message = this.editor.sync();
+        // this.requestBody.message = this.editor.sync();
         this.createLeaveMessage();
       },
     },
@@ -211,7 +216,7 @@
 
     // 挂载之前
     beforeMount() {
-
+      console.log('挂载之前: beforeMount');
     },
 
     // 挂载结束
@@ -222,5 +227,4 @@
 </script>
 
 <style>
-
 </style>
