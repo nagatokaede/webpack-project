@@ -1,0 +1,21 @@
+body {
+    background-color: rgb(241, 241, 241);
+    font-size: 18px;
+    padding: 20px 40px 40px 40px;
+    color: #333;
+}
+h1 {
+    font-size: 1.8em;
+    margin: .5em 0;
+    text-align: center;
+    font-weight: normal;
+}
+p {
+    margin-bottom: 1em;
+    margin-top: 1em;
+    text-indent: 2em;
+    word-wrap: break-word;
+    word-break: break-word;
+    /* letter-spacing: 0.5px; */
+    line-height: 1.8;
+}

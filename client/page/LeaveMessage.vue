@@ -1,5 +1,5 @@
 <template>
-    <div id="leaveMessage">
+    <div class="leaveMessage">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12">
