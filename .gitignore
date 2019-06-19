@@ -3,3 +3,4 @@
 /package-lock.json
 /dist
 /webpackConfig/dist
+/server/static

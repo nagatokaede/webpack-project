@@ -1,9 +1,11 @@
 'use static';
 
+const path = require('path');
 const Route = require('koa-router');
 const { leaveMessageInsert, leaveMessageDelete, leaveMessageFindByPage} = require('../mongo/util/leaveMessage');
 const { userFind, userInsert, userChangePassword, userDelete } = require('../mongo/util/user');
-const insSpider = require('../spider/bin/spider');
+const insSpider = require('../util/spider/bin/spider');
+const uploadFile = require('../util/fs/upload');
 
 
 // leave message API -----------------------------------------
@@ -33,7 +35,7 @@ leaveMessage.put('/', async ctx => {
   }
 });
 
-// leave message API -----------------------------------------
+// user API -----------------------------------------
 const user = new Route();
 
 user.post('/login', async ctx => {
@@ -79,8 +81,28 @@ instagramSpider.post('/', async ctx => {
   }
 });
 
+// upload api ------------------------------------------------
+const upload = new Route();
+
+upload.post('/', async ctx => {
+  // 上传文件请求处理
+  let result = { success: false };
+  let serverFilePath = path.join(__dirname, '../static/images');
+  try {
+    // 上传文件事件
+    result = await uploadFile( ctx, {
+      fileType: 'photo',
+      path: serverFilePath
+    });
+    ctx.body = result
+  } catch (err) {
+    ctx.throw(500, err);
+  }
+});
+
 // 装载所有路由接口 ---------------------------------------------
 const router = new Route();
+router.use('/upload', upload.routes(), upload.allowedMethods());
 router.use('/instagramSpider', instagramSpider.routes(), instagramSpider.allowedMethods());
 router.use('/leaveMessage', leaveMessage.routes(), leaveMessage.allowedMethods());
 router.use('/user', user.routes(), user.allowedMethods());

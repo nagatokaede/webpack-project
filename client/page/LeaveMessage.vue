@@ -29,11 +29,6 @@
 
                 <div>
                     <div class="form-group col-xs-12">
-                        <!--<div class="form-group">-->
-                            <!--<input type="text" class="form-control" v-model="requestBody.createBy" placeholder="用户名">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="col-xs-6">-->
                         <select class="form-control" v-model="requestBody.style">
                             <option value="default">default</option>
                             <option value="primary" style="color: #fff; background-color: #337ab7">primary</option>
@@ -46,8 +41,8 @@
                 </div>
 
                 <div class="col-xs-12">
-                    <textarea id="editor" placeholder="简单的 simditor 富文本编辑器" autofocus></textarea>
-                    <button type="button" class="btn btn-info btn-lg btn-block" @click="getEdit" style="margin: 10px 0">
+                    <div ref="editor" style="text-align: left; background-color: white;"></div>
+                    <button type="button" class="btn btn-info btn-lg btn-block" @click="submitEditor" style="margin: 10px 0">
                         提交富文本
                     </button>
                 </div>
@@ -59,6 +54,7 @@
 <script>
   import md5 from 'md5';
   import filter from '../util/tool.js';
+  import E from 'wangeditor';
 
   export default {
     name: 'LeaveMessage',
@@ -73,21 +69,7 @@
           md5_24: '',
         },
 
-        editor: '', // 保存 simditor 对象
-        toolbar: [
-          'bold',
-          'italic',
-          'underline',
-          'strikethrough',
-          'fontScale',
-          'ol',
-          'ul',
-          'blockquote',
-          'hr',
-          'indent',
-          'outdent',
-          'alignment',
-        ], // 自定义工具栏
+        editor: '', // 保存 wangEditor 对象
 
         query: {
           pageIndex: 1,
@@ -100,7 +82,7 @@
 
         requestBody: {
           createBy: '匿名者',
-          message: '',
+          message: '', // 富文本内容
           style: 'default'
         },
 
@@ -180,14 +162,18 @@
 
       /* -------- 工具 ---------- */
       createEditor() {
-        this.editor = new Simditor({
-          textarea: document.querySelector('textarea'),
-          toolbar: this.toolbar
-        });
+        this.editor = new E(this.$refs.editor);
+        // 上传文件地址
+        this.editor.customConfig.uploadImgServer = '/upload';
+        // 上传文件的 filename
+        this.editor.customConfig.uploadFileName = 'file';
+        // 监听
+        this.editor.customConfig.onchange = html => {
+          this.requestBody.message = html;
+        };
+        this.editor.create();
 
-        this.editor.on('valuechanged', () => {
-          this.requestBody.message = this.editor.getValue();
-        }); // valuechanged 是 simditor 自带获取值得方法
+        this.listenImg();
       },
 
       dateMD5() {
@@ -202,9 +188,22 @@
         };
       },
 
-      getEdit() {
-        // this.requestBody.message = this.editor.sync();
-        this.createLeaveMessage();
+      submitEditor() {
+        this.createLeaveMessage(() => {
+          this.editor.txt.clear();
+        });
+      },
+
+      editorContent() {
+        const content = this.requestBody.message;
+        this.editor.txt.html('<p>用 JS 设置的内容</p>');
+      },
+
+      listenImg() {
+        console.log(this.$refs.editor);
+        this.$refs.editor.addEventListener("click", e => {
+          console.log(e.path);
+        });
       },
     },
 

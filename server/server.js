@@ -10,6 +10,7 @@ const webpack = require('webpack');
 const bodyParser = require('koa-bodyparser');
 const devMiddleware = require('koa-webpack-dev-middleware');
 const hotMiddleware = require('koa-webpack-hot-middleware');
+const koaStatic = require('koa-static');
 
 const fs = require('./util/fs.js');
 const config = require('./config.js');
@@ -38,7 +39,7 @@ app.use(devMiddleware(compiler, {
 // 使用改造后的 webpack-hot-middleware 实现热加载功能
 app.use(hotMiddleware(compiler));
 
-// console.warn('this is nagato no message!!!!!!', process.env);
+app.use(koaStatic(__dirname + '/static'));
 
 // app.listen(config.port, '0.0.0.0', () => {
 //   console.info('running server localhost:' + config.port);

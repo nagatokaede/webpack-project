@@ -35,5 +35,5 @@ class instance {
   };
 }
 
-export const api = new instance('https://kaede.nagato.top/');
-// export const api = new instance('https://localhost/');
+// export const api = new instance('https://kaede.nagato.top/');
+export const api = new instance('https://localhost/');
