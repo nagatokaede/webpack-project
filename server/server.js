@@ -12,7 +12,7 @@ const devMiddleware = require('koa-webpack-dev-middleware');
 const hotMiddleware = require('koa-webpack-hot-middleware');
 const koaStatic = require('koa-static');
 
-const fs = require('./util/fs.js');
+const fs = require('./util/fs/fs.js');
 const config = require('./config.js');
 const router = require('./router/route');
 const page404 = require('./router/404');

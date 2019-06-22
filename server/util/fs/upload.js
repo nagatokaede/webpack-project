@@ -50,9 +50,10 @@ uploadFile = (ctx, options) => {
   return new Promise((resolve, reject) => {
     console.log('文件上传中...');
     let result = {
-      success: false,
-      message: '',
-      data: null
+      description: '',
+      data: {
+        data: '',
+      },
     };
     
     // 解析请求文件事件
@@ -67,11 +68,8 @@ uploadFile = (ctx, options) => {
       
       // 文件写入事件结束
       file.on('end', () => {
-        result.errno = 0;
-        result.message = '文件上传成功';
-        result.data = [
-          `//${ctx.host}/images/${fileType}/${fileName}`
-        ];
+        result.data.data = `//${ctx.host}/images/${fileType}/${fileName}`;
+        result.description = 'SUCCESS';
         console.log('文件上传成功！');
         resolve(result);
       })
@@ -87,6 +85,7 @@ uploadFile = (ctx, options) => {
     // 解析错误事件
     busboy.on('error', err => {
       console.log('文件上出错:', err);
+      result.description = '文件上出错:' + err;
       reject(result);
     });
     

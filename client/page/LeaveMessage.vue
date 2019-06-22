@@ -54,7 +54,7 @@
 <script>
   import md5 from 'md5';
   import filter from '../util/tool.js';
-  import E from 'wangeditor';
+  import E from '../asset/wangeditor/wangEditor';
 
   export default {
     name: 'LeaveMessage',
@@ -70,6 +70,34 @@
         },
 
         editor: '', // 保存 wangEditor 对象
+        editorConfig: {
+          onchange: html => {
+            this.requestBody.message = html;
+          },
+          // uploadImgServer: '/upload',
+          // uploadVideoServer: '/upload',
+          customUploadImg: (files, insert) => {
+            // files 是 input 中选中的文件列表
+            // insert 是获取图片 url 后，插入到编辑器的方法
+            for (const i in files) {
+              this.upFile(files[i]).then(res => {
+                insert(res.data);
+              });
+            }
+            // this.leaveMessageFindByPage().then(res => {
+            //   console.log(res);
+            // });
+          },
+          customUploadVideo: (files, insert) => {
+            // files 是 input 中选中的文件列表
+            // insert 是获取图片 url 后，插入到编辑器的方法
+            for (const i in files) {
+              this.upFile(files[i]).then(res => {
+                insert(res.data);
+              });
+            }
+          }
+        },
 
         query: {
           pageIndex: 1,
@@ -137,6 +165,20 @@
         });
       },
 
+      upFile(file) {
+        return new Promise((resolve, reject) => {
+          this.$axios.upFile(file).then(res => {
+            const data = res.data;
+            if (data.description === 'SUCCESS') {
+              resolve(data.data);
+            } else {
+              alert(data.data.message);
+              reject(data.data);
+            }
+          });
+        });
+      },
+
       /* ------ api 调用 -------- */
       getLeaveMessageList() {
         this.leaveMessageFindByPage().then(res => {
@@ -163,17 +205,12 @@
       /* -------- 工具 ---------- */
       createEditor() {
         this.editor = new E(this.$refs.editor);
-        // 上传文件地址
-        this.editor.customConfig.uploadImgServer = '/upload';
-        // 上传文件的 filename
-        this.editor.customConfig.uploadFileName = 'file';
-        // 监听
-        this.editor.customConfig.onchange = html => {
-          this.requestBody.message = html;
-        };
+        // 配置参数
+        for (const i in this.editorConfig) {
+          this.editor.customConfig[i] = this.editorConfig[i];
+        }
+        // 创建编辑器
         this.editor.create();
-
-        this.listenImg();
       },
 
       dateMD5() {
@@ -197,13 +234,6 @@
       editorContent() {
         const content = this.requestBody.message;
         this.editor.txt.html('<p>用 JS 设置的内容</p>');
-      },
-
-      listenImg() {
-        console.log(this.$refs.editor);
-        this.$refs.editor.addEventListener("click", e => {
-          console.log(e.path);
-        });
       },
     },
 
