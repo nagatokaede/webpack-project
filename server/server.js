@@ -7,20 +7,21 @@ const path = require('path');
 
 const Koa = require('koa');
 const webpack = require('webpack');
-const bodyParser = require('koa-bodyparser');
 const devMiddleware = require('koa-webpack-dev-middleware');
 const hotMiddleware = require('koa-webpack-hot-middleware');
-const koaStatic = require('koa-static');
+const nginx = require('./middleware/nginx');
 
 const fs = require('./util/fs/fs.js');
 const config = require('./config.js');
-const router = require('./router/route');
-const page404 = require('./router/404');
 
 const app = new Koa();
 
 // 强制使用 HTTPS 访问
 app.use(sslify());
+
+app.use(nginx({
+  proxyTables: config.proxy,
+}));
 
 let options = {
   key: fs.readFileSync(path.normalize(__dirname + '/ssl/kaede.nagato.top.key')),
@@ -38,21 +39,6 @@ app.use(devMiddleware(compiler, {
 
 // 使用改造后的 webpack-hot-middleware 实现热加载功能
 app.use(hotMiddleware(compiler));
-
-app.use(koaStatic(__dirname + '/static'));
-
-// app.listen(config.port, '0.0.0.0', () => {
-//   console.info('running server localhost:' + config.port);
-// });
-
-// 加载 koa-bodyparser 中间件，处理 POST 提交信息
-app.use(bodyParser());
-
-// 加载路由中间件
-app.use(router.routes()).use(router.allowedMethods());
-
-// 加载 404 中间件
-app.use(page404());
 
 http.createServer(app.callback()).listen(config.port, '0.0.0.0');
 https.createServer(options, app.callback()).listen(443, '0.0.0.0');

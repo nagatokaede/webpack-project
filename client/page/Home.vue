@@ -6,27 +6,16 @@
                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                         <!-- Indicators -->
                         <ol class="carousel-indicators">
-                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                            <li data-target="#carousel-example-generic"
+                                v-for="(item, index) in images" :key="index"
+                                :data-slide-to="index" :class="{'action': !index}"></li>
                         </ol>
 
                         <!-- Wrapper for slides -->
                         <div class="carousel-inner" role="listbox">
-                            <div class="item active">
-                                <img class="img-responsive center-block" :src="images.img_1" />
-                                <div class="carousel-caption">
-                                </div>
-                            </div>
-                            <div class="item">
-                                <img class="img-responsive center-block" :src="images.img_2" />
-                                <div class="carousel-caption">
-                                </div>
-                            </div>
-                            <div class="item">
-                                <img class="img-responsive center-block" :src="images.img_3" />
-                                <div class="carousel-caption">
-                                </div>
+                            <div v-for="(item, index) in images" :key="index" :class="['item', {'active': !index}]">
+                                <img class="img-responsive center-block" :src="item" alt="Responsive image"/>
+                                <div class="carousel-caption"></div>
                             </div>
                         </div>
 
@@ -48,21 +37,47 @@
 </template>
 
 <script>
-  import img_1 from '../asset/images/peipei/20190211180753.jpg';
-  import img_2 from '../asset/images/peipei/20190211205504.jpg';
-  import img_3 from '../asset/images/peipei/20190211180559.jpg';
   export default {
     name: 'Home',
 
     data() {
       return {
-        images: {
-          img_1,
-          img_2,
-          img_3
+        images: [],
+        requestBody: {
+          url: 'https://instagram.com/yuihorie_official?igshid=rnvm0zflrsdb',
         },
-      }
-    }
+      };
+    },
+
+    methods: {
+      /* -------- api ---------- */
+      getInstagramSpider(body) {
+        return new Promise((resolve, reject) => {
+          this.$axios.getInstagramSpider(body).then(res => {
+            const data = res.data;
+            if (data.description === 'SUCCESS') {
+              resolve(data.data);
+            } else {
+              alert(data.data.message);
+              reject(data.data);
+            }
+          });
+        });
+      },
+
+      /* ------ api 调用 -------- */
+      getInsImgList() {
+        this.getInstagramSpider(this.requestBody).then(res => {
+          this.images = res.data;
+        });
+      },
+
+    },
+
+    // 创建完毕
+    created() {
+      this.getInsImgList();
+    },
   }
 </script>
 

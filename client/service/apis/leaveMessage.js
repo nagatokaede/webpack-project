@@ -2,16 +2,16 @@
 import { api } from '../../util/axios.js';
 
 export const leaveMessageFindByPage = query => api.get(
-  '/leaveMessage/',
+  '/leaveMessage',
   { params: query }
 );
 
 export const leaveMessageInsert = body => api.post(
-  '/leaveMessage/',
+  '/leaveMessage',
   body
 );
 
 export const leaveMessageDelete = body => api.put(
-  '/leaveMessage/',
+  '/leaveMessage',
   body
 );

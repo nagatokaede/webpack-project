@@ -4684,7 +4684,7 @@ UploadVideo.prototype = {
         
         // ------------------------------ 自定义上传 ------------------------------
         if (customUploadVideo && typeof customUploadVideo === 'function') {
-            customUploadVideo(resultFiles, this.insertLinkImg.bind(this));
+            customUploadVideo(resultFiles, this.insertLinkVideo.bind(this));
         
             // 阻止以下代码执行
             return;
