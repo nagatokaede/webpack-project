@@ -13,11 +13,12 @@
                 </div>
 
                 <div>
-                    <div class="col-xs-12 col-md-10" style="padding-bottom: 20px;">
+                    <div :class="[ 'col-xs-12 col-md-10', control.url ]" style="padding-bottom: 20px;">
                         <input type="text" class="form-control" placeholder="输入 Instagram 地址" v-model="requestBody.url">
+                        <span v-show="control.url" class="help-block">请输入一个正确 Instagram 地址</span>
                     </div>
                     <div class="col-xs-12 col-md-2" style="padding-bottom: 20px;">
-                        <button type="button" class="btn btn-primary btn-block" @click="getInsImgList">获取</button>
+                        <button type="button" class="btn btn-primary btn-block" @click="submit">获取</button>
                     </div>
                 </div>
 
@@ -56,7 +57,13 @@
         },
         responseDate: {
           data: []
-        }
+        },
+
+        control: {
+          status: [ '', 'has-success', 'has-warning', 'has-error' ],
+
+          url: '',
+        },
       }
     },
 
@@ -96,6 +103,15 @@
         };
       },
 
+      /* -------- 表单验证 ---------- */
+      submit() {
+        if (this.requestBody.url.indexOf('https://www.instagram.com/') !== -1) {
+          this.control.url = this.control.status[0];
+          this.getInsImgList();
+        } else {
+          this.control.url = this.control.status[3];
+        }
+      },
     },
 
     // 创建完毕

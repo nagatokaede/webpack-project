@@ -74,7 +74,7 @@
 <style>
     div.header {
         position: sticky;
-        z-index: 1;
+        z-index: 9999;
         top: 0;
     }
     .navbar-default {
