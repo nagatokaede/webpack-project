@@ -4,10 +4,10 @@ const env = process.env;
 
 const config = {
   port: env.PORT || '8080',
-  mode: env.MODE || 'development',
+  mode: env.NODE_ENV || 'development',
   proxy: [
     {
-      target: `http://${env.BASEURL || 'kaede.nagato.top:3000'}/`,
+      target: `http://${env.NODE_PROJECT || 'kaede.nagato.top:3000'}/`,
       context: 'api-getaway'
     },
   ]

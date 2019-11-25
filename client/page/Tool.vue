@@ -105,7 +105,7 @@
 
       /* -------- 表单验证 ---------- */
       submit() {
-        if (this.requestBody.url.indexOf('https://www.instagram.com/') !== -1) {
+        if (this.requestBody.url.includes('instagram')) {
           this.control.url = this.control.status[0];
           this.getInsImgList();
         } else {
