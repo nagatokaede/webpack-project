@@ -10,11 +10,6 @@ module.exports = {
     ignore_watch: [ 'node_modules', 'logs', 'public' ],
     max_memory_restart: '80M', // 如果您的应用超出了指定的内存量，则会重新启动。人性化格式：可以是“ 10M”，“ 100K”，“ 2G”等。
     env: {
-      NODE_ENV: 'development',
-      PORT: '8080',
-      NODE_PROJECT: 'nagato.top:3000',
-    }, // 环境变量将出现在您的应用程序中
-    env_production: {
       NODE_ENV: 'production',
       PORT: '443',
       NODE_PROJECT: 'localhost:3000',
