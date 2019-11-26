@@ -11,7 +11,7 @@ module.exports = {
     max_memory_restart: '80M', // 如果您的应用超出了指定的内存量，则会重新启动。人性化格式：可以是“ 10M”，“ 100K”，“ 2G”等。
     env: {
       NODE_ENV: 'production',
-      PORT: '8000',
+      PORT: '8888',
       NODE_PROJECT: 'localhost:3000',
     }, // pm2 start ecosystem.config.js --env production，将环境切换到NODE_ENV=production
     out_file: './logs/out.log', // 普通日志路径
