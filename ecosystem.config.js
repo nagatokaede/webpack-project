@@ -5,7 +5,7 @@ module.exports = {
     // args: '-a 13 -b 12', // 包含通过CLI传递给脚本的所有参数的字符串
     cwd: './', // 您的应用将从其启动的目录
     instances: 1, // 要启动的应用程序实例数
-    autorestart: true, // 默认为true。如果为false，则PM2如果崩溃或和平结束，将不会重新启动您的应用
+    autorestart: false, // 默认为true。如果为false，则PM2如果崩溃或和平结束，将不会重新启动您的应用
     watch: false,
     max_memory_restart: '80M', // 如果您的应用超出了指定的内存量，则会重新启动。人性化格式：可以是“ 10M”，“ 100K”，“ 2G”等。
     env: {
