@@ -6,8 +6,7 @@ module.exports = {
     cwd: './', // 您的应用将从其启动的目录
     instances: 1, // 要启动的应用程序实例数
     autorestart: true, // 默认为true。如果为false，则PM2如果崩溃或和平结束，将不会重新启动您的应用
-    watch: [ 'server' ], // 启用监视和重新启动功能，如果文件夹或子文件夹中的文件发生更改，则将重新加载您的应用
-    ignore_watch: [ 'node_modules', 'logs', 'public', 'client' ],
+    watch: false,
     max_memory_restart: '80M', // 如果您的应用超出了指定的内存量，则会重新启动。人性化格式：可以是“ 10M”，“ 100K”，“ 2G”等。
     env: {
       NODE_ENV: 'production',
