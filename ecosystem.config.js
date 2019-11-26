@@ -7,7 +7,7 @@ module.exports = {
     instances: 1, // 要启动的应用程序实例数
     autorestart: false, // 默认为true。如果为false，则PM2如果崩溃或和平结束，将不会重新启动您的应用
     watch: false,
-    max_memory_restart: '80M', // 如果您的应用超出了指定的内存量，则会重新启动。人性化格式：可以是“ 10M”，“ 100K”，“ 2G”等。
+    max_memory_restart: '200M', // 如果您的应用超出了指定的内存量，则会重新启动。人性化格式：可以是“ 10M”，“ 100K”，“ 2G”等。
     env: {
       NODE_ENV: 'production',
       PORT: '8888',
