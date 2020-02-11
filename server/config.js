@@ -7,7 +7,7 @@ const config = {
   mode: env.NODE_ENV || 'development',
   proxy: [
     {
-      target: `http://${env.NODE_PROJECT || 'kaede.nagato.top:3000'}/`,
+      target: `http://${env.NODE_PROJECT || 'nagato.top:3000'}/`,
       context: 'api-getaway'
     },
   ]

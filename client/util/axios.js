@@ -9,29 +9,21 @@ class instance {
       timeout: 3000,
     });
   };
-  
-  get(url, params) {
-    return this.axios.get(url, params);
+
+  get(url, config) {
+    return this.axios.get(url, config);
   };
-  
-  delete(url, params) {
-    return this.axios.delete(url, params);
+
+  delete(url, config) {
+    return this.axios.delete(url, config);
   };
-  
-  head(url, params) {
-    return this.axios.head(url, params);
+
+  post(url, data, config) {
+    return this.axios.post(url, data, config);
   };
-  
-  post(url, params) {
-    return this.axios.post(url, params);
-  };
-  
-  put(url, params) {
-    return this.axios.put(url, params);
-  };
-  
-  patch(url, params) {
-    return this.axios.patch(url, params);
+
+  put(url, data, config) {
+    return this.axios.put(url, data, config);
   };
 }
 

@@ -6,7 +6,7 @@
                     <div class="swiper-wrapper">
                         <div v-for="(item, index) in data" :key="index" :class="['swiper-slide col-xs-12', {'col-lg-6': item.size === 'narrow'}]">
                             <div v-if="item.type === 'img'">
-                                <img :data-src="item.content" class="img-responsive center-block swiper-lazy" alt="Responsive image">
+                                <img :data-src="ossPath + item.content" class="img-responsive center-block swiper-lazy" alt="Responsive image">
                             </div>
 
                             <div v-if="item.type === 'article'">
@@ -42,46 +42,42 @@
 </template>
 
 <script>
-  import img_01 from '../../asset/images/yimoudo/01/1.jpeg';
-  import img_02 from '../../asset/images/yimoudo/01/2.jpeg';
-  import img_03 from '../../asset/images/yimoudo/01/3.jpeg';
-  import img_04 from '../../asset/images/yimoudo/01/4.jpeg';
-  import img_05 from '../../asset/images/yimoudo/01/5.jpeg';
   export default {
     name: 'sisterLife01',
 
     data() {
       return {
+        ossPath: '//nagato-oss.oss-cn-hongkong.aliyuncs.com/WebApp/Images/%E3%81%84%E3%82%82%E3%83%BC%E3%81%A8%E3%82%89%E3%81%84%E3%81%B5/',
         data: [
           {
             type: 'img',
             size: 'narrow',
-            content: img_05,
+            content: '05.jpeg',
           },
           {
             type: 'article',
             size: 'narrow',
-            content: '',
+            content: '04.jpeg',
           },
           {
             type: 'img',
             size: 'wide',
-            content: img_04,
+            content: '03.jpeg',
           },
           {
             type: 'img',
             size: 'wide',
-            content: img_03,
+            content: '02.jpeg',
           },
           {
             type: 'img',
             size: 'wide',
-            content: img_02,
+            content: '01.jpeg',
           },
           {
             type: 'img',
             size: 'narrow',
-            content: img_01,
+            content: '00.jpeg',
           },
         ],
 

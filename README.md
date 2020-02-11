@@ -5,4 +5,5 @@ practice: node + webpack + vue
 mongod --dbpath ~/data/db --port 15498
 
 ###node:
+npm run build
 npm run server

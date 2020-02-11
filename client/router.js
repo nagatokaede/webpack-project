@@ -15,6 +15,8 @@ import sisterLife_01 from './page/yimoudoLife/01.vue';
 import Register from './page/Register.vue';
 import Login from  './page/Login.vue';
 
+import ApiManage from './page/ApiManage.vue';
+
 // 要告诉 vue 使用 vueRouter
 Vue.use(VueRouter);
 
@@ -42,6 +44,10 @@ const routes = [
   {
     path:'/register',
     component: Register
+  },
+  {
+    path:'/apiManage',
+    component: ApiManage
   },
   {
     path:'/login',

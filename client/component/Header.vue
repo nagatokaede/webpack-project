@@ -26,6 +26,10 @@
                     </p>
 
                     <ul class="nav navbar-nav navbar-right">
+                        <li><router-link class="text-center" to="/apiManage">Api</router-link></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
                         <li><router-link class="text-center" to="/tool">Tool</router-link></li>
                     </ul>
 
@@ -74,7 +78,7 @@
 <style>
     div.header {
         position: sticky;
-        z-index: 9999;
+        z-index: 1;
         top: 0;
     }
     .navbar-default {
