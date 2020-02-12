@@ -3,7 +3,7 @@
 const env = process.env;
 
 const config = {
-  port: env.PORT || '8080',
+  port: env.PORT || '8000',
   mode: env.NODE_ENV || 'development',
   proxy: [
     {

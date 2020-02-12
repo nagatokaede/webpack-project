@@ -1,6 +1,6 @@
 <template>
     <div class="api-manage">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <form class="form-inline">
@@ -27,10 +27,11 @@
                                     <th style="width: 240px;">Id</th>
                                     <th style="width: 100px;">Method</th>
                                     <th>Uri</th>
+                                    <th style="width: 100px;">isList</th>
                                     <th>Query</th>
                                     <th>Body</th>
                                     <th>remark</th>
-                                    <th>操作</th>
+                                    <th style="width: 240px;">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,6 +39,7 @@
                                     <td>{{ item._id }}</td>
                                     <td>{{ item.type }}</td>
                                     <td>{{ item.uri }}</td>
+                                    <td>{{ item.isList }}</td>
                                     <td>{{ item.query }}</td>
                                     <td>{{ item.body }}</td>
                                     <td>{{ item.remark }}</td>
@@ -64,8 +66,8 @@
                         <div class="modal-body">
                             <form>
                                 <div class="form-group">
-                                    <label for="creatMethod">Method: </label>
-                                    <select class="form-control" id="creatMethod" v-model="addOrEditReqBody.type">
+                                    <label for="createMethod">Method: </label>
+                                    <select class="form-control" id="createMethod" v-model="addOrEditReqBody.type">
                                         <option>GET</option>
                                         <option>POST</option>
                                         <option>PUT</option>
@@ -73,20 +75,27 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="creatUri">Uri: </label>
-                                    <input class="form-control" id="creatUri" placeholder="Uri" v-model="addOrEditReqBody.uri">
+                                    <label for="createUri">Uri: </label>
+                                    <input class="form-control" id="createUri" placeholder="Uri" v-model="addOrEditReqBody.uri">
                                 </div>
                                 <div class="form-group">
-                                    <label for="creatQuery">query: </label>
-                                    <textarea id="creatQuery" class="form-control" rows="3" v-model="addOrEditReqBody.query"></textarea>
+                                    <label for="createIsList">isList: </label>
+                                    <select class="form-control" id="createIsList" v-model="addOrEditReqBody.isList">
+                                        <option>true</option>
+                                        <option>false</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="creatBody">body: </label>
-                                    <textarea id="creatBody" class="form-control" rows="3" v-model="addOrEditReqBody.body"></textarea>
+                                    <label for="createQuery">query: </label>
+                                    <textarea id="createQuery" class="form-control" rows="3" v-model="addOrEditReqBody.query"></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="creatRemark">remark: </label>
-                                    <textarea id="creatRemark" class="form-control" rows="3" v-model="addOrEditReqBody.remark"></textarea>
+                                    <label for="createBody">body: </label>
+                                    <textarea id="createBody" class="form-control" rows="3" v-model="addOrEditReqBody.body"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="createRemark">remark: </label>
+                                    <textarea id="createRemark" class="form-control" rows="3" v-model="addOrEditReqBody.remark"></textarea>
                                 </div>
                             </form>
                         </div>
@@ -180,8 +189,9 @@ export default {
 
       // 新增&编辑
       addOrEditReqBody: {
-        type: '',
+        type: 'GET',
         uri: '',
+        isList: true,
         query: '',
         body: '',
         remark: '',
@@ -380,8 +390,9 @@ export default {
     openCreateModel() {
       // 表单初始化
       this.addOrEditReqBody = {
-        type: '',
+        type: 'GET',
         uri: '',
+        isList: 'true',
         query: '',
         body: '',
         remark: '',
@@ -401,21 +412,12 @@ export default {
         this.getMainList('search');
         // 关闭模态框
         $('#addOrEditModal').modal('hide');
-        // 清除表单缓存
-        this.addOrEditReqBody = {
-          type: '',
-          uri: '',
-          query: '',
-          body: '',
-          remark: '',
-        };
       });
     },
 
     openEditModel(id) {
       // 获取详情
       this.apiFindOne({_id: id}).then(res => {
-        console.log(res);
         // 表单初始化
         this.addOrEditReqBody = this.toFromData(res);
         // 模态框
@@ -428,21 +430,12 @@ export default {
     editApi() {
       // 预处理请求数据
       const body = this.toRequestData();
-      console.log(body);
       // 发起新增请求
       this.apiChange(body).then(() => {
         // 刷新主表数据
         this.getMainList('search');
         // 关闭模态框
         $('#addOrEditModal').modal('hide');
-        // 清除表单缓存
-        this.addOrEditReqBody = {
-          type: '',
-          uri: '',
-          query: '',
-          body: '',
-          remark: '',
-        };
       });
     },
 
@@ -566,6 +559,7 @@ export default {
 
       content.query = content.query.split(',').filter(x => x);
       content.body = content.body.split(',').filter(x => x);
+      content.isList = content.isList === 'true';
 
       return content;
     },
@@ -576,6 +570,7 @@ export default {
         id: res._id,
         type: res.type,
         uri: res.uri,
+        isList: res.isList ? 'true' : 'false',
         query: res.query.join(',') || '',
         body: res.body.join(',') || '',
         remark: res.remark || '',
